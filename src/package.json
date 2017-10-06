@@ -1,0 +1,21 @@
+{
+  "name": "10-minute-home-workout",
+  "version": "1.0.0",
+  "description": "A 10 minute workout for a smart home",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "workout",
+    "home",
+    "smart home"
+  ],
+  "author": "SBX",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-sdk": "^1.0.14"
+  }
+}
