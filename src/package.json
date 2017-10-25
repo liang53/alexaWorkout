@@ -10,11 +10,12 @@
     "alexa",
     "skill",
     "workout",
-    "home",
+    "home"
   ],
   "author": "SBX",
   "license": "ISC",
   "dependencies": {
-    "alexa-sdk": "^1.0.14"
+    "alexa-sdk": "^1.0.14",
+    "universal-analytics": "^0.4.15"
   }
 }
