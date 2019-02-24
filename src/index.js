@@ -1,9 +1,9 @@
 'use strict';
 
-const Alexa = require('alexa-sdk');
+const Alexa = require('alexa-sdk');// app that allows the code to be structured as below
 const APP_ID = 'amzn1.ask.skill.4b44c855-a0fa-4c63-b50c-4ba7476538fc';
-const exercises = require('./exercises');
-var ua = require('universal-analytics');
+const exercises = require('./exercises'); // the exercise file
+var ua = require('universal-analytics'); // setup for google analytics
 var visitor = ua('UA-108353707-1');
 
 const languageStrings = {
@@ -16,30 +16,35 @@ const languageStrings = {
             ARMS: exercises['EXERCISES_EN_US'][3][Object.keys(exercises['EXERCISES_EN_US'][3])],
             BACK: exercises['EXERCISES_EN_US'][4][Object.keys(exercises['EXERCISES_EN_US'][4])],
             BUTT: exercises['EXERCISES_EN_US'][5][Object.keys(exercises['EXERCISES_EN_US'][5])],
+            MSG_STRETCH: "This stretch exercise is a blend of various techniques including yoga. <break time='1s'/>  ",
+            MSG_LEGS: "This workout set does not require any equipments. It targest the whole leg including the gluteus maximus.<break time='1s'/>  ",
+            MSG_ABS: "No equipments are needed for this workout set. You will be lying on your back for most of the exercises.<break time='1s'/>  ",
+            MSG_ARMS: "This workout set requires bench, medicine ball and dumbbells. You can use replacements. You have 10 seconds till it begins.<break time='10s'/>  ",
+            MSG_BACK: "This workout set requires a bench, dumbbells and elastic bands. You can use replacements. 10 seconds till program begins.<break time='10s'/>  ",
+            MSG_BUTT: "This workout does not require any equipments. To intensify the workout, add ankle weights or elastic bands. You have 5 seconds till the program begins.<break time='5s'/> ",
             SKILL_NAME: '10 Minutes Home Workout',
-            WELCOME_MESSAGE: "Welcome to 10 Minutes Home Workout. Which exercise do you want to do?",
-            WELCOME_REPROMPT: "You can say stretch, legs, abs, arms, butt, or back. You can say more info to learn how this program works or you can say exit. What would you like to do?",
-            HELP_MESSAGE: "You can say exit, stretch, legs, abs, arms, butt, or back. What would you like to do?",
-            HELP_REPROMPT: "You can pick an exercise or say exit. What would you like to do?",
-            STOP_MESSAGE: "Let\'s stop here.",
-            EXERCISE_NOT_FOUND: "I'm sorry. This exercise do not exist.",
-            MORE_INFO: "This program consists of an optional stretch exercise and 10 minute workouts each for legs, abs, back, arms, and butt. I will continuously speak for the next 8 to 10 minutes. It is recommended to do stretching before and after every exercise, and to hold each pose for 60 seconds. Exercises are grouped into legs, abs, back, arms, and butt. To get better results, each exercise should be performed 2 times with a few minutes break in between. If you cannot keep up, do as much as you can. Another way to shape your workout is to do the sections across the week. For instance, you can do Monday legs, Tuesday, abs, Wednesday arms, and so on. To increase fat burn, do a 20 minute cardio before each exercise. ",
-            FIRST_TIME_MESSAGE: "This program is built for you to listen to the instructions and perform the action immediately after the exercise is mentioned. As you are exercising, I will give advice on how to do the exercise properly. If this is your first time, you might not be able to follow as quickly and may need to replay the exercise. Keep yourself hydrated before each exercise.",
-            FINISHED_EXERCISE: "Your exercise is now complete. Always stretch your muscles after each workout. What would you like to do now?",
-            BREAK_TIME: "Take a 3 minute break and hydrate yourself if you need to. Relax and stretch. Do anything that makes you feel comfortable. When you are ready say continue.",
+            WELCOME_MESSAGE: "Welcome to 10 Minutes Home Workout. You can say start abs or start butt. Which exercise do you want to do? ",
+            WELCOME_REPROMPT: "You can say the word start and the exercise choice. Your choices are stretch, legs, abs, arms, butt, or back. You can say more info to learn how this program works or you can say exit. What would you like to do?",
+            HELP_MESSAGE: "You can say exit, start stretch, start legs, start abs, arms, butt, or back. The command phrases are listed on Amazon skill page for 10 Minutes Home Workout. What would you like to do?",
+            HELP_REPROMPT: "You can pick an exercise or say exit. You must say the word start and then the exercise name. Alternatively, you can say legs workout or begin legs. What would you like to do?",
+            STOP_MESSAGE: "Let\'s stop here ",
+            EXERCISE_NOT_FOUND: "I am not understanding. You can pick an exercise by saying start legs. You must say the word start and then the exercise. Alternatively you can say begin legs or legs workout. Or you can say exit. What can I help you with? ",
+            MORE_INFO: "This program is a blend of various types of exercises primarily strength training, yoga, and pilates. It contains 10 minutes exercises for stretch, legs, abs, arms, and butt. To start the exercise, say start legs or start arms. Some of these exercises requires heavy and light dumbbells, bench, medicine ball, and stretch band. Once the workout starts, I will speak continuously for the next 10 minutes, and you will perform the exercises immediately. You will not be able to stop once I begin. Stretching is recommended before and after each exercise. Variations are welcomed. Do what feels natural and right for your body. Perform each set 2 to 3 times with few minutes break in between for better results. To increase fat burn, do a 20 minute cardio exercise before starting the set. Cardio exercises can be walking outside for at least 30 minutes.",
+            FIRST_TIME_MESSAGE: "This program is built for you to listen to the instructions and perform the action immediately after the exercise is mentioned. As you are exercising, I will give advice on how to do the exercise properly. If this is your first time, you might not be able to follow as quickly and may need to replay the exercise. Keep yourself hydrated before each exercise ",
+            FINISHED_EXERCISE: "<break time='2s'/> Your exercise is now complete. Perform each set 2 to 3 times for better results. Stretch after each workout. What would you like to do now?",
         },
     },
 };
 
-const handlers = {
+const handlers = { // structure based on alexa-sdk and amazon alexa - further configuration needed in developer.amazon.com
     'LaunchRequest': function () {
       var speechOutput = this.t('WELCOME_MESSAGE');
       var repromptspeech = this.t('WELCOME_REPROMPT');
-      visitor.event("LaunchRequest", "Initiate Alexa skill").send();
-      this.emit(':ask', speechOutput, repromptspeech);
+      visitor.event("LaunchRequest", "Initiate Alexa skill").send(); // sends event to google analytics
+      this.emit(':ask', speechOutput, repromptspeech); // what alexa should say after receiving this request
     },
     'InfoIntent': function () {
-      const speechOutput = this.t('MORE_INFO') + "Which exercise would you like to do?";
+      const speechOutput = this.t('MORE_INFO') + "<break time='1s'/> Which exercise would you like to do?";
       const repromptspeech = this.t('HELP_MESSAGE');
       visitor.event("InfoIntent", "Request information").send();
       this.emit(':ask', speechOutput, repromptspeech);
@@ -47,12 +52,15 @@ const handlers = {
     'WorkoutIntent': function () {
       const workoutRequest = this.event.request.intent.slots.exercise.value.toUpperCase();
       const workout = this.t(workoutRequest);
-      var speechOutput = workout;
       const reprompt = this.t('HELP_MESSAGE');
+      const msg_workout = "MSG_" + workoutRequest;
+      var speechOutput = workout;
 
       if (workoutRequest != "STRETCH") {
           speechOutput = shuffle(workout);
       }
+
+      speechOutput = this.t(msg_workout) + workout;
 
       visitor.event("WorkoutIntent", "Start exercise", workoutRequest).send();
       speechOutput += this.t('FINISHED_EXERCISE');
@@ -60,7 +68,7 @@ const handlers = {
     },
     'AMAZON.HelpIntent': function () {
       const speechOutput = this.t('HELP_MESSAGE');
-      const reprompt = this.t('HELP_MESSAGE');
+      const reprompt = this.t('HELP_REPROMPT');
       visitor.event("Amazon.HelpIntent", "Help").send();
       this.emit(':ask', speechOutput, reprompt);
     },
@@ -72,13 +80,27 @@ const handlers = {
       visitor.event("Amazon.StopIntent", "Stop").send();
       this.emit(':tell', this.t('STOP_MESSAGE'));
     },
+    'AMAZON.PauseIntent': function () {
+      visitor.event("Amazon.PauseIntent", "Pause").send();
+      this.emit(':ask', "Amazon currently does not allowed this command to be applied to my speech. It is only available for certain files such as songs. This command will end the skill. If you want to start the workout again, say start and then the exercise choice. For instance, you can say start legs.");
+    },
+    'AMAZON.ResumeIntent': function () {
+      visitor.event("Amazon.ResumeIntent", "Resume").send();
+      this.emit(':ask', 'Amazon currently does not allowed this command to be applied to my speech. It is only available for certain files such as songs. This command will end the skill. If you want to start the workout again, say start and then the exercise choice. For instance, you can say start legs.');
+    },
+    'AMAZON.RepeatIntent': function () {
+      visitor.event("Amazon.ResumeIntent", "Repeat").send();
+      this.emit(':ask', 'Amazon currently does not allowed this command to be applied to my speech. It is only available for certain files such as songs. This command will end the skill. If you want to start the workout again, say start and then the exercise choice. For instance, you can say start legs.');
+    },
     'Unhandled': function () {
       visitor.event("Unhandled", "Invalid request").send();
-      this.emit(':tell', 'I am not understanding. You can pick an exercise by saying start legs or you can say exit. What can I help you with?');
+      var speechOutput = this.t('EXERCISE_NOT_FOUND');
+      var reprompt = this.t('HELP_REPROMPT');
+      this.emit(':ask', speechOutput, reprompt);
     },
 };
 
-function shuffle(array) {
+function shuffle(array) { // function to shuffle the exercise order each time the application is called
   var temp = null,
       j = 0,
       i = 0
